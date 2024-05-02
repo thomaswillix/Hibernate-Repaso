@@ -161,12 +161,36 @@ public class Main {
             System.out.println("VENTA BORRADA CON ÉXITO");
         }
     // Actualizar el stock de productos, descontando las unidades vendidas, teniendo en cuenta que el stock no puede ser negativo.
-        System.out.println("\n-------------- ACTUALIZACIÓN DE PRODUCTOS --------------");
-        
+        System.out.println("\n-------------- PRODUCTOS SIN ACTUALIZAR --------------");
         Query q = s.createQuery("FROM Productos");
         List<Productos> listaP = q.list();
         for (int i = 0; i < listaP.size(); i++) {
             System.out.println(listaP.get(i).toString());
         }
+        
+        System.out.println("\n-------------- ACTUALIZACIÓN DE PRODUCTOS --------------");
+        int stock, udsVendidas;
+        Query q1 = s.createQuery("FROM Ventas");
+        List<Ventas> listaV = q1.list();
+        for (int i = 0; i < listaV.size(); i++) {
+            p = (Productos) s.get(Productos.class, listaV.get(i).getProductos().getCodProducto());
+            if(p==null)
+                System.err.println("EL PRODUCTO " +listaV.get(i).getProductos().getCodProducto() +" NO EXISTE");
+            else {
+                stock = p.getStock();
+                v = (Ventas) s.get(Ventas.class, listaV.get(i).getCodVenta());
+                udsVendidas = v.getUnidadesVendidas();
+                if(stock - udsVendidas >= 0)
+                  p.setStock(stock - udsVendidas);
+                else System.err.println("LA VENTA " + v.getCodVenta() + " NO SE PUDO EFECTUAR.");
+            }
+        }
+        System.out.println("\n-------------- PRODUCTOS ACTUALIZADOS --------------");
+        Query q2 = s.createQuery("FROM Productos");
+        List<Productos> listaP1 = q2.list();
+        for (int i = 0; i < listaP1.size(); i++) {
+            System.out.println(listaP1.get(i).toString());
+        }
+        t.commit();
     }
 }

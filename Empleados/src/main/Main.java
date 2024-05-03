@@ -2,11 +2,19 @@ package main;
 
 import POJOS.Empleado;
 import POJOS.Profesion;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.EOFException;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
@@ -24,6 +32,7 @@ public class Main {
 
     public static void main(String[] args) throws SAXException, ParserConfigurationException{
         File f = new File("bbdd.xml");
+        File err = new File("errores.txt");
         ArrayList<Registro> registros = new ArrayList<>();
         List<String> errores = new ArrayList<>();
 
@@ -42,12 +51,11 @@ public class Main {
         for (Registro registro : registros) {       // COMPROBACIÓN DE QUE FUNCIONE EL PARSEO
             System.out.println(registro.toString());
         }
-        System.out.println("---------------- INSERCIÓN DE LOS REGISTROS ----------------");
+        System.out.println("\n---------------- INSERCIÓN DE LOS REGISTROS ----------------");
         SessionFactory sf = HibernateUtil.sessionFactory();
         Session s = sf.openSession();
         Transaction t = s.beginTransaction();
         
-        File err = new File("errores.txt");
         Empleado e;
         Profesion p;
         
@@ -67,12 +75,40 @@ public class Main {
                 s.save(e);
             }
         }
-        System.out.println("\n ---------------- LISTA DE EMPLEADOS ----------------");
+        t.commit(); 
+        
+        System.out.println("\n---------------- LISTA DE EMPLEADOS ----------------");
         Query q = s.createQuery("FROM Empleado");
         List<Empleado> listaE = q.list();
         for (int i = 0; i < listaE.size(); i++) {
             System.out.println(listaE.get(i).toString());
         }
+        
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(err));
+            for (int i = 0; i < errores.size(); i++) {
+                bw.write(errores.get(i));
+            }
+            bw.close();
+        } catch (IOException ex) {
+            System.err.println("Error writing into error.txt file");
+        }
+        
+        System.out.println("\n---------------- LISTA DE ERRORES ----------------");
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(err));
+            String line;
+            try {
+                while((line = br.readLine()) != null){
+                    System.out.println(line);
+                }
+            } catch (EOFException ex) {
+                System.err.println("END OF FILE");
+            } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (FileNotFoundException ex) {
+            System.err.println("File not found");
+        }
     }
-    
 }

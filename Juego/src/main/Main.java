@@ -93,6 +93,7 @@ public class Main {
                 }
             }
         }
+        t.commit();
         
         System.out.println("----------------- LISTA ACTUALIZADA -----------------");
         Query q1 = s.createQuery("FROM Personaje");

@@ -84,7 +84,7 @@ public class Main {
             v = new Ventas("V30", p, fecha, uds);
             s.save(v);
         } else {
-            v.toString();
+            System.out.println(v.toString());
         }
 
     // Obtener los datos de la venta v10 y los datos del producto asociado
@@ -94,7 +94,6 @@ public class Main {
         System.out.println("DATOS DE LA VENTA: " + v.toString() + "\nDATOS DEL PRODUCTO: " + p.toString());
     // Dar de alta un nuevo producto y una venta. Los datos se pedirán por teclado, comprobando que no existe.
         System.out.println("\n-------------------ALTA DE UN PRODUCTO-------------------");
-        sc.nextLine();
         String codS;
         do {
             System.out.println("\nCódigo de producto (número entero):");
@@ -182,9 +181,10 @@ public class Main {
                 else stock = 0;
                 v = (Ventas) s.get(Ventas.class, listaV.get(i).getCodVenta());
                 udsVendidas = v.getUnidadesVendidas();
-                if(stock - udsVendidas >= 0)
-                  p.setStock(stock - udsVendidas);
-                else System.err.println("LA VENTA " + v.getCodVenta() + " NO SE PUDO EFECTUAR.");
+                if(stock - udsVendidas >= 0){
+                  p.setStock(stock - udsVendidas); 
+                  s.save(p);
+                } else System.err.println("LA VENTA " + v.getCodVenta() + " NO SE PUDO EFECTUAR.");
             }
         }
         System.out.println("\n-------------- PRODUCTOS ACTUALIZADOS --------------");

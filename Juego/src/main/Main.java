@@ -83,11 +83,11 @@ public class Main {
                     s.save(p1);
                 }
                 
-                if (p1.getVida() / 2 < p1VidaIni) {
+                if (p1.getVida() < p1VidaIni/2) {
                     System.err.println("EL JUGADOR " + p1.getNombre()+ " HA SIDO ELIMINADO");
                     s.delete(p1);
                 }
-                if (p2.getVida() / 2 < p2VidaIni){
+                if (p2.getVida()< p2VidaIni / 2){
                     System.err.println("EL JUGADOR " + p2.getNombre()+ " HA SIDO ELIMINADO");
                     s.delete(p2);
                 }
@@ -101,6 +101,5 @@ public class Main {
             System.out.println(personaje.toString());
         }
 
-    }
-    
+    }   
 }

@@ -177,7 +177,9 @@ public class Main {
             if(p==null)
                 System.err.println("EL PRODUCTO " +listaV.get(i).getProductos().getCodProducto() +" NO EXISTE");
             else {
-                stock = p.getStock();
+                if(p.getStock() != null)
+                  stock = p.getStock();
+                else stock = 0;
                 v = (Ventas) s.get(Ventas.class, listaV.get(i).getCodVenta());
                 udsVendidas = v.getUnidadesVendidas();
                 if(stock - udsVendidas >= 0)

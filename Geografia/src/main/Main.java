@@ -1,7 +1,9 @@
 package main;
 
 import POJOS.Localidades;
+import java.util.List;
 import java.util.Scanner;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -27,7 +29,7 @@ public class Main {
         
         int accion;
         do {
-            System.out.println("1. Añadir una nueva localidad\n2. Mostrar los datos de una localidad\n"
+            System.out.println("\n1. Añadir una nueva localidad\n2. Mostrar los datos de una localidad\n"
                 + "3. Actualizar el censo de una localidad\n4. Eliminar una localidad\n5. Mostrar todas "
                 + "las localidades\n6. Salir");
             accion = sc.nextInt();
@@ -56,40 +58,113 @@ public class Main {
                 }
             }
         } while (accion!=6);
+        t.commit();
+        System.exit(0);
     }
 
     private static void aniadir() {
-        System.out.println("Para añadir una localidad necesitaremos su código, nombre, censo, "
+        System.out.println("\nPara añadir una localidad necesitaremos su código, nombre, censo, "
                 + "habitantes y el nombre de la provincia.\n\nEmpecemos por el código: ");
         String codLocalidad, nombreLocalidad, nombreProvincia;
         int censo, habitantes;
         do {
-            codLocalidad = sc.nextLine();
+            codLocalidad = sc.nextLine().trim();
             l = (Localidades) s.get(Localidades.class, codLocalidad);
             if(l != null)
               System.err.println("Ese código ya le pertenece a otra localidad");
             else if (codLocalidad.isEmpty()) {
-                System.err.println("La cadena está vacía");
+                System.err.println("El código está vacío");
                 l = null;
             }
         } while (l != null);
-        //l = new Localidades(codLocalidad, nombre, Integer.SIZE, Integer.BYTES, nomProv);
+        
+        do {
+            System.out.println("\nNombre de la localidad: ");            
+            nombreLocalidad = sc.nextLine().trim();
+            if (nombreLocalidad.isEmpty()) System.err.println("El nombre de la localidad está vacío");
+        } while (nombreLocalidad.isEmpty());
+        
+        do {
+            System.out.println("\nNombre de la provincia: ");            
+            nombreProvincia = sc.nextLine().trim();
+            if (nombreProvincia.isEmpty()) System.err.println("El nombre de la provincia está vacío");
+        } while (nombreProvincia.isEmpty());
+        
+        do {
+            System.out.println("\nCenso: ");            
+            censo = sc.nextInt();
+            if (censo<0) System.err.println("El censo no puede ser negativo");
+        } while (censo<0);
+        
+        do {
+            System.out.println("\nHabitantes: ");            
+            habitantes = sc.nextInt();
+            if (habitantes<0) {
+                System.err.println("El número de habitantes no puede ser negativo");
+            } else if(habitantes<censo) System.err.println("El número de habitantes no puede ser menor al censo");
+            
+        } while (habitantes<0 || habitantes < censo);
+        
+        l = new Localidades(codLocalidad, nombreLocalidad, censo, habitantes, nombreProvincia);
+        s.save(l);
     }
 
     private static void mostrarDatos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("\nDeme el código de una localidad para obtener todos sus datos.");
+        do {
+            String cod = sc.nextLine();
+            l = (Localidades) s.get(Localidades.class, cod);
+            if (l==null) {
+                System.err.println("Ese código no pertenece a ninguna localidad.\n\nVuelva a introducir el código: ");
+            }
+        } while (l==null);
+        
+        System.out.println(l.toString());
     }
 
     private static void actualizarCenso() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("\nDeme el código de una localidad para después actualizar su censo.");
+        do {
+            String cod = sc.nextLine();
+            l = (Localidades) s.get(Localidades.class, cod);
+            if (l==null) {
+                System.err.println("Ese código no pertenece a ninguna localidad.\n\nVuelva a introducir el código: ");
+            }
+        } while (l==null);
+        
+        System.out.println("El censo actual es: " + l.getCenso() +"\n\n¿Qué nuevo número de censo quiere darle?");
+        int censo;
+        do {            
+            censo = sc.nextInt();
+            if (censo > l.getHabitantes()) System.err.println("El censo de "  + l.getNombre()+ " no puede ser superior a su número de "
+                    + "habitantes: "+ l.getHabitantes());
+            
+        } while (censo > l.getHabitantes());
+        System.out.println("Censo de " + l.getNombre()+ " modificado a: " + censo);
+        l.setCenso(censo);
+        s.saveOrUpdate(l);
     }
 
     private static void eliminar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("\nDeme el código de una localidad para eliminarla: ");
+        do {
+            String cod = sc.nextLine();
+            l = (Localidades) s.get(Localidades.class, cod);
+            if (l==null) {
+                System.err.println("Ese código no pertenece a ninguna localidad.\n\nVuelva a introducir el código: ");
+            }
+        } while (l==null);
+        System.out.println("La localidad con código: " + l.getCodLoc()+ " y nombre " + l.getNombre() + " ha sido eliminada");
+        s.delete(l);
     }
 
     private static void mostrarTodas() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("\nAquí tiene todos los datos de la tabla de Localidades actualmente:");
+        Query q = s.createQuery("FROM Localidades");
+        List<Localidades> lista = q.list();
+        for (Localidades l : lista) {
+            System.out.println(l.toString());
+        }
     }
     
 }

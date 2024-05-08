@@ -15,7 +15,7 @@ import org.hibernate.Transaction;
  */
 public class Main {
     /* 
-       NOTA IMPORTANTE: Cuando haya un error en la creación de los archivos (véase, que cuando se no detecten las clases
+       NOTA IMPORTANTE: Cuando haya un error en la creación de los archivos (véase, que no detecten las clases
        a las que queremos hacer ingeniería inversa), lo más probable es que haya habido un error en la creación del 
        hibernate.cfg.xml. La solución que he implementado es volver a crearlo y asegurarme de que esté todo bien.
     */

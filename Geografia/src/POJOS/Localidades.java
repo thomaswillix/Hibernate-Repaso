@@ -67,8 +67,10 @@ public class Localidades  implements java.io.Serializable {
         this.nomProv = nomProv;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Localidades{" + "codLoc=" + codLoc + ", nombre=" + nombre + ", censo=" + censo + ", habitantes=" + habitantes + ", nomProv=" + nomProv + '}';
+    }
 
 }
 

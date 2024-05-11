@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 11-may-2024 14:48:12 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="POJOS.Retenciones" table="retenciones" catalog="examen" optimistic-lock="version">
+        <composite-id name="id" class="POJOS.RetencionesId">
+            <key-property name="nombreEmpleado" type="string">
+                <column name="NombreEmpleado" length="40" />
+            </key-property>
+            <key-property name="nombreDepartamento" type="string">
+                <column name="NombreDepartamento" length="15" />
+            </key-property>
+        </composite-id>
+        <property name="salarioBruto" type="double">
+            <column name="Salario_Bruto" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="retencion" type="double">
+            <column name="Retencion" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="salarioNeto" type="double">
+            <column name="Salario_Neto" precision="22" scale="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

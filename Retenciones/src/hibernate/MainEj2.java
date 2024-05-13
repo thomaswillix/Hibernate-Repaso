@@ -67,8 +67,8 @@ public class MainEj2 {
             System.out.println(retencion.toString());
         }
         t.commit();
-        
-        System.exit(0);
+        s.close();     //cerramos la sesión
+        sf.close();    //cerramos el sessionfactory
     }
     
 }

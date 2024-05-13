@@ -59,7 +59,8 @@ public class Main {
             }
         } while (accion!=6);
         t.commit();
-        System.exit(0);
+        s.close();
+        sf.close();
     }
 
     private static void aniadir() {

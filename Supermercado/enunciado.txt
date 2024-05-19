@@ -1,0 +1,17 @@
+Sea la base de datos Supermercado, que se crea al ejecutar el script supermercado.sql y que está formada 
+por las tablas Producto y Ventas.
+
+Se pide, mediante Hibernate, y utilizando el fichero de binario ventas.dat actualizar la tabla Ventas, 
+atendiendo a las siguientes condiciones:
+
+	. La estructura del fichero binario es:
+		Nvendedor(String), Codprod (int) y Unidades(int)
+	
+	• Si el vendedor no existe se le dará de alta en la tabla Ventas con los datos leídos del fichero. 
+	El id será el mayor de la tabla+1. El campo Ganancias se tendrá que calcular.
+
+	• Si el vendedor existe se tendrá que actualizar la cantidad vendida, sumándole las unidades que 
+	vienen en el fichero, y recalculando las ganancias.
+
+Finalmente, sacar por pantalla la tabla Ventas actualizada, pero mostrando el  nombre del producto en vez 
+del código.

@@ -4,7 +4,7 @@ use Supermercado;
 CREATE TABLE Productos (
  Codprod  int PRIMARY KEY,
  Nombre varchar(20),
- Precio   DECIMAL(3,1)
+ Precio   DECIMAL(4,1)
 )Engine=InnoDB;
 
 INSERT INTO productos VALUES (10,'producto 1',2.50);

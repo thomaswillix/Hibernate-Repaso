@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 20-may-2024 9:57:07 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="POJOS.Estadisticas" table="estadisticas" catalog="futbol" optimistic-lock="version">
+        <id name="codEquipo" type="string">
+            <column name="CodEquipo" length="4" />
+            <generator class="assigned" />
+        </id>
+        <property name="pganados" type="java.lang.Integer">
+            <column name="PGanados" />
+        </property>
+        <property name="pperdidos" type="java.lang.Integer">
+            <column name="PPerdidos" />
+        </property>
+        <property name="pempatados" type="java.lang.Integer">
+            <column name="PEmpatados" />
+        </property>
+        <property name="golFav" type="java.lang.Integer">
+            <column name="GolFav" />
+        </property>
+        <property name="golCont" type="java.lang.Integer">
+            <column name="GolCont" />
+        </property>
+        <property name="puntos" type="java.lang.Integer">
+            <column name="Puntos" />
+        </property>
+    </class>
+</hibernate-mapping>
